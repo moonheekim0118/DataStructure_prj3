@@ -3,6 +3,7 @@
 #include <cstring>
 #include <string>
 using namespace std;
+
 int main(void) {
 	Tree Organization;
 	string command;
@@ -22,7 +23,7 @@ int main(void) {
 			tok = strtok(NULL, " ");
 		}
 		if (input[0]=="print") {
-			Organization.showSub();
+			Organization.showStrucuture(NULL);
 		}
 		else if (input[1] == "") continue; //boss이름 입력 
 		else if (input[1]=="hires") {

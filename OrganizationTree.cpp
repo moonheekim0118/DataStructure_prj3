@@ -2,7 +2,6 @@
 #include <iostream>
 using namespace std;
 
-//수정 필요 : 높이 2인 자식들이 자식 1개밖에 추가가 안된다.
 //삭제 시 삭제할 노드의 부모노드 찾아서, 부모->child null로 바꾸어주고 sibling도 움직임 필요.
 
 TreeNode::TreeNode(string name, TreeNode* sibling, int parent_height) {
@@ -53,7 +52,6 @@ void Tree::insert_sibling(TreeNode* employee, TreeNode* first) {
 	while (tmp->sibling != NULL) 
 	{
 		tmp = tmp->sibling;
-		cout << tmp->name << endl;
 	}
 	tmp->sibling = employee;
 }
@@ -100,25 +98,31 @@ bool Tree::isEmpty()const {
 	return root == NULL;
 }
 
-void Tree::showStrucuture(TreeNode* root)const 
+void Tree::showStrucuture(TreeNode* node)const 
 {
-	TreeNode* tmp = root; //루트부터 
-	for (int i = 1; i < tmp->height; i++) cout << "+"; //+ 높이만큼 +출력 
-	cout << tmp->name; //이름출력 
-	cout << endl;
-	tmp = root->child; //루트 자식 
-	while (tmp != NULL)  //모든 루트의 자식에 대하여 
-	{
+	if (node == NULL) node = root;
+	TreeNode* tmp = node; //루트부터 
+
+	while (tmp) {
 		for (int i = 1; i < tmp->height; i++) cout << "+"; //+ 높이만큼 +출력 
 		cout << tmp->name; //이름출력 
 		cout << endl;
-		if (tmp->child != NULL) { //해당 자식이 자식이 있다면 ? 
-			showStrucuture(tmp->child);
+		TreeNode* tmpChild = tmp->child; //루트 자식 
+		while (tmpChild != NULL)  //모든 루트의 자식에 대하여 
+		{
+			for (int i = 1; i < tmpChild->height; i++) cout << "+"; //+ 높이만큼 +출력 
+			cout << tmpChild->name; //이름출력 
+			cout << endl;
+			if (tmpChild->child != NULL) { //해당 자식이 자식이 있다면 ? 
+				showStrucuture(tmpChild->child);
+			}
+			tmpChild = tmpChild->sibling; //다음 자식 
 		}
-		tmp = tmp->sibling; //다음 자식 
+		tmp = tmp->sibling;
 	}
 }
 //이 두 함수 하나로 합치기 
+/*
 void Tree::showSub()const 
 {
 	TreeNode* tmp = root; //루트부터 
@@ -135,4 +139,4 @@ void Tree::showSub()const
 		}
 		tmp = tmp->sibling; //다음 자식 
 	}
-}
+}*/
