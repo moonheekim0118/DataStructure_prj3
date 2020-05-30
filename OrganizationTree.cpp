@@ -85,14 +85,44 @@ void Tree::remove(string employee) {
 	TreeNode* child = employeeNode->child;
 
 	if (child == NULL) {
-		//parent찾아서..null처리해줘야함..
+		employeeNode = NULL;
 		delete employeeNode;
 		return;
 	}
-	employeeNode->name = child->name;
-	employeeNode->child = child->sibling;
+	move_child(employeeNode);
 }
 
+void Tree::move_child(TreeNode* parent) {
+
+	if (parent->child == NULL) 
+		return;
+	TreeNode* child = parent->child;
+	parent->name = child->name;
+	if (child->child == NULL) 
+	{
+		if (child->sibling != NULL) parent->child = child->sibling;
+		else parent->child = NULL;
+	}
+	
+	else {
+		move_child(child);
+	}
+
+	
+}
+
+void Tree::duplicate_child(TreeNode* parent, TreeNode* dup) 
+{
+	parent->child = dup->sibling;
+	TreeNode* tmp = dup->sibling;
+	TreeNode* tmp2 = parent->child;
+	while (tmp) 
+	{
+		tmp2->sibling = tmp->sibling;
+		tmp2 = tmp2->sibling;
+		tmp = tmp->sibling;
+	}
+}
 
 bool Tree::isEmpty()const {
 	return root == NULL;
@@ -121,22 +151,3 @@ void Tree::showStrucuture(TreeNode* node)const
 		tmp = tmp->sibling;
 	}
 }
-//이 두 함수 하나로 합치기 
-/*
-void Tree::showSub()const 
-{
-	TreeNode* tmp = root; //루트부터 
-	cout << tmp->name; //이름출력 
-	cout << endl;
-	tmp = root->child; //루트 자식 
-	while (tmp != NULL)  //모든 루트의 자식에 대하여 
-	{
-		for (int i = 1; i < tmp->height; i++) cout << "+"; //+ 높이만큼 +출력 
-		cout << tmp->name; //이름출력 
-		cout << endl;
-		if (tmp->child != NULL) { //해당 자식이 자식이 있다면 ? 
-			showStrucuture(tmp->child);
-		}
-		tmp = tmp->sibling; //다음 자식 
-	}
-}*/

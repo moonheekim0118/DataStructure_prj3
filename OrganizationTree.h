@@ -22,10 +22,10 @@ public:
 	void insert(string employer, string employee);
 	void insert_sibling(TreeNode* employee, TreeNode*first);
 	void remove(string employee);
-	void remove_node(TreeNode* parent);
+	void move_child(TreeNode* parent);
+	void duplicate_child(TreeNode* parent, TreeNode* dup);
 	bool isEmpty()const;
 	void showStrucuture(TreeNode* root)const;
-	void showSub()const;
 	TreeNode* findEmployer(string name, TreeNode* node)const;
 	TreeNode* findEmployer_child(string name, TreeNode* parent)const;
 private:
