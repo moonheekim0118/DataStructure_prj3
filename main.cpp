@@ -23,6 +23,7 @@ int main(void) {
 			tok = strtok(NULL, " ");
 		}
 		if (input[0]=="print") {
+			cout << "----------------------" << endl;
 			Organization.showStrucuture(NULL);
 			cout << "----------------------" << endl;
 		}
@@ -33,5 +34,6 @@ int main(void) {
 		else if (input[0] == "fire") {
 			Organization.remove(input[1]);
 		}
+		
 	}
 }
