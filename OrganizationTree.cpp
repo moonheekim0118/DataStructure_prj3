@@ -8,7 +8,6 @@ TreeNode::TreeNode(string name, TreeNode* sibling, int parent_height) {
 	this->name = name;
 	this->sibling = sibling;
 	this->height = parent_height+1;
-
 }
 
 Tree::Tree() {
@@ -76,6 +75,44 @@ TreeNode* Tree::findEmployer_child(string name, TreeNode* parent)const {
 	}
 	return NULL;
 }
+bool Tree::find_parentSub(string employee, TreeNode* parent) 
+{
+	TreeNode* tmp = parent;
+	TreeNode* tmp_pre = NULL;
+	while (tmp!=NULL) {
+		tmp_pre = tmp;
+		if (tmp->name == employee) 
+		{
+			if (tmp_pre != NULL) {
+				tmp_pre->sibling = tmp->sibling;
+				return true;
+			}
+
+		}
+		tmp_pre = tmp;
+		tmp = tmp->sibling;
+	}
+	return false;
+}
+
+void Tree::find_parent(string employee) 
+{
+	TreeNode* tmp = root;
+	while (tmp->child) {
+		if (tmp->child->name == employee) {
+			if (tmp->sibling != NULL) {
+				tmp->child = tmp->sibling;
+			}
+			else {
+				tmp->child = NULL;
+			}
+			return;
+		}
+		bool found = find_parentSub(employee, tmp);
+		if (found) return;
+		tmp = tmp->child;
+	}
+}
 
 void Tree::remove(string employee) {
 	if (isEmpty()) {
@@ -85,7 +122,7 @@ void Tree::remove(string employee) {
 	TreeNode* child = employeeNode->child;
 
 	if (child == NULL) {
-		employeeNode = NULL;
+		find_parent(employee);
 		delete employeeNode;
 		return;
 	}
@@ -133,7 +170,7 @@ void Tree::showStrucuture(TreeNode* node)const
 	if (node == NULL) node = root;
 	TreeNode* tmp = node; //루트부터 
 
-	while (tmp) {
+	while (tmp!=NULL) {
 		for (int i = 1; i < tmp->height; i++) cout << "+"; //+ 높이만큼 +출력 
 		cout << tmp->name; //이름출력 
 		cout << endl;

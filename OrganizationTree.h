@@ -21,6 +21,8 @@ public:
 	void clear();
 	void insert(string employer, string employee);
 	void insert_sibling(TreeNode* employee, TreeNode*first);
+	void find_parent(string employee);
+	bool find_parentSub(string employee, TreeNode* parent);
 	void remove(string employee);
 	void move_child(TreeNode* parent);
 	void duplicate_child(TreeNode* parent, TreeNode* dup);
