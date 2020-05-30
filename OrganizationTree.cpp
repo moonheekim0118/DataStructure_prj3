@@ -75,19 +75,16 @@ TreeNode* Tree::findEmployer_child(string name, TreeNode* parent)const {
 	}
 	return NULL;
 }
+
 bool Tree::find_parentSub(string employee, TreeNode* parent) 
 {
-	TreeNode* tmp = parent;
-	TreeNode* tmp_pre = NULL;
+	TreeNode* tmp = parent->sibling;
+	TreeNode* tmp_pre = parent;
 	while (tmp!=NULL) {
-		tmp_pre = tmp;
 		if (tmp->name == employee) 
 		{
-			if (tmp_pre != NULL) {
-				tmp_pre->sibling = tmp->sibling;
-				return true;
-			}
-
+			tmp_pre->sibling = tmp->sibling;
+			return true;
 		}
 		tmp_pre = tmp;
 		tmp = tmp->sibling;
@@ -99,16 +96,18 @@ void Tree::find_parent(string employee)
 {
 	TreeNode* tmp = root;
 	while (tmp->child) {
-		if (tmp->child->name == employee) {
-			if (tmp->sibling != NULL) {
-				tmp->child = tmp->sibling;
+		if (tmp->child->name == employee) { //바로 아래 child 중에 있는지 찾아보기 
+			TreeNode* removed = tmp->child;
+			if (tmp->child->sibling != NULL) {
+				tmp->child = tmp->child->sibling;
+				tmp->child->sibling = NULL;
 			}
 			else {
 				tmp->child = NULL;
 			}
 			return;
 		}
-		bool found = find_parentSub(employee, tmp);
+		bool found = find_parentSub(employee, tmp); //sibling 조정 
 		if (found) return;
 		tmp = tmp->child;
 	}
@@ -116,23 +115,26 @@ void Tree::find_parent(string employee)
 
 void Tree::remove(string employee) {
 	if (isEmpty()) {
-		return;
-	}
+		return; }
 	TreeNode* employeeNode = findEmployer(employee, root);
-	TreeNode* child = employeeNode->child;
-
-	if (child == NULL) {
-		find_parent(employee);
-		delete employeeNode;
+	if (employeeNode == NULL) {
+		cout << "이름을 잘못 입력하였습니다." << endl;
 		return;
 	}
-	move_child(employeeNode);
+
+	TreeNode* child = employeeNode->child;
+	if (child == NULL) {
+		find_parent(employee); } 
+	else {
+		move_child(employeeNode);
+	}
 }
 
 void Tree::move_child(TreeNode* parent) {
 
-	if (parent->child == NULL) 
+	if (parent->child == NULL) {
 		return;
+	}
 	TreeNode* child = parent->child;
 	parent->name = child->name;
 	if (child->child == NULL) 

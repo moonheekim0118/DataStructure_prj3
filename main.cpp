@@ -24,6 +24,7 @@ int main(void) {
 		}
 		if (input[0]=="print") {
 			Organization.showStrucuture(NULL);
+			cout << "----------------------" << endl;
 		}
 		else if (input[1] == "") continue; //boss이름 입력 
 		else if (input[1]=="hires") {
